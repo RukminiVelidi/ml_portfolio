@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - SDE & ML Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://rsms.me/inter/inter.css');
+        @import url('https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap');
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                linear-gradient(rgba(17, 24, 39, 0.95), rgba(17, 24, 39, 0.95)),
+                url('https://images.unsplash.com/photo-1593455072121-79571170271c?q=80&w=2070&auto-format&fit=crop&ixlib=rb-4.0.3&id=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .glass-card {
+            background: rgba(31, 41, 55, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        code {
+            background-color: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- REFINED SIDEBAR STYLES --- */
+        aside, #main-content, #top-header {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* --- WRITING ANIMATION --- */
+        #name-heading {
+            font-family: 'Cedarville Cursive', cursive;
+            font-weight: 500;
+        }
+        .writing-animation {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: .15em solid #60a5fa; /* Blinking cursor */
+            animation:
+                writing 2s steps(40, end) forwards,
+                blink-caret .75s step-end 4 forwards;
+        }
+
+        @keyframes writing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #60a5fa; }
+        }
+
+        /* Default state: sidebar is hidden on mobile, shown on desktop */
+        #sidebar {
+            transform: translateX(0);
+        }
+
+        /* State when body has .sidebar-open class on mobile */
+        .sidebar-open #sidebar {
+            transform: translateX(0);
+        }
+        .sidebar-open #overlay {
+            display: block;
+        }
+
+        /* Desktop specific styles */
+        @media (min-width: 768px) { /* md breakpoint */
+            /* Default state on desktop: sidebar is OPEN */
+            #sidebar {
+                transform: translateX(0);
+            }
+            #main-content {
+                margin-left: 16rem; /* 64 * 0.25rem = 256px */
+            }
+             #top-header {
+                width: calc(100% - 16rem);
+            }
+
+            /* State when body DOES NOT have .sidebar-open class (i.e., sidebar is CLOSED on desktop) */
+            body:not(.sidebar-open) #sidebar {
+                 transform: translateX(-100%);
+            }
+            body:not(.sidebar-open) #main-content {
+                margin-left: 0;
+            }
+             body:not(.sidebar-open) #top-header {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-300 bg-gray-900">
+
+<!-- Sidebar Navigation -->
+<aside id="sidebar" class="bg-gray-900/80 backdrop-blur-md text-white w-64 fixed inset-y-0 left-0 z-40">
+    <div class="flex justify-between items-center p-6 text-center border-b border-gray-700">
+        <div>
+            <h2 class="text-2xl font-bold text-white">Velidi Rukmini</h2>
+            <p class="text-sm text-gray-400 mt-1">SDE & ML Engineer</p>
+        </div>
+        <button id="sidebar-close-btn" class="md:hidden text-gray-400 hover:text-white">
+            <i data-lucide="x"></i>
+        </button>
+    </div>
+    <nav class="mt-6">
+        <a href="#about" class="flex items-center gap-x-3 px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+            <i data-lucide="user"></i> About
+        </a>
+        <a href="#experience" class="flex items-center gap-x-3 px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+            <i data-lucide="briefcase"></i> Experience
+        </a>
+        <a href="#projects" class="flex items-center gap-x-3 px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+            <i data-lucide="folder-kanban"></i> Projects
+        </a>
+        <a href="#lab" class="flex items-center gap-x-3 px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+            <i data-lucide="beaker"></i> ML Lab
+        </a>
+        <a href="#achievements" class="flex items-center gap-x-3 px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+            <i data-lucide="award"></i> Achievements
+        </a>
+        <a href="#responsibilities" class="flex items-center gap-x-3 px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+            <i data-lucide="users"></i> Responsibilities
+        </a>
+        <a href="#coding-profiles" class="flex items-center gap-x-3 px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+            <i data-lucide="code-2"></i> Coding Profiles
+        </a>
+        <a href="#skills" class="flex items-center gap-x-3 px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+            <i data-lucide="star"></i> Skills
+        </a>
+    </nav>
+</aside>
+
+<!-- Overlay for mobile sidebar -->
+<div id="overlay" class="fixed inset-0 bg-black/50 z-30 hidden"></div>
+
+<!-- Main Content Wrapper -->
+<div id="main-content" class="main-content">
+    <!-- Top Header for all screen sizes, contains hamburger menu -->
+    <header id="top-header" class="bg-gray-900/50 backdrop-blur-sm fixed w-full z-20 top-0 h-16 flex items-center px-4 md:px-6">
+        <button id="hamburger-btn" class="text-white p-2">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <span class="md:hidden font-bold text-xl text-white ml-4">Velidi Rukmini</span>
+    </header>
+
+    <main class="pt-16">
+        <!-- About Section -->
+        <section id="about" class="bg-transparent min-h-screen flex items-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
+                <img class="w-40 h-40 rounded-full mx-auto mb-6 border-4 border-gray-700" src="https://placehold.co/200x200/4A5568/E2E8F0?text=You" alt="Your Name">
+                <h1 id="name-heading" class="text-5xl sm:text-6xl md:text-7xl min-h-[60px] sm:min-h-[72px] md:min-h-[84px]">
+                    <span class="writing-animation">Velidi Rukmini/span>
+                </h1>
+                <p class="mt-6 max-w-2xl mx-auto text-xl text-gray-400">I am a passionate and driven Software Development Engineer with a deep-seated fascination for the power of Machine Learning. My internship experience honed my ability to build robust, scalable software, and now I am dedicated to applying that engineering rigor to create intelligent, data-driven systems. I thrive on the challenge of transforming complex problems into elegant, impactful solutions and am actively seeking opportunities to contribute to projects at the intersection of software and artificial intelligence.</p>
+                <div class="mt-8 flex justify-center items-center space-x-6">
+                    <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-900 transition-transform hover:scale-105">
+                        My Resume
+                    </a>
+                    <a href="https://github.com" target="_blank" class="text-gray-400 hover:text-white transition-transform hover:scale-110">
+                        <i data-lucide="github" class="w-8 h-8"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" class="text-gray-400 hover:text-white transition-transform hover:scale-110">
+                        <i data-lucide="linkedin" class="w-8 h-8"></i>
+                    </a>
+                    <a href="mailto:youremail@example.com" class="text-gray-400 hover:text-white transition-transform hover:scale-110">
+                        <i data-lucide="mail" class="w-8 h-8"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 sm:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Experience</h2>
+                </div>
+                <div class="space-y-12">
+                    <!-- Experience Item 1 -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
+                        <div class="md:col-span-1">
+                            <p class="text-lg font-semibold text-white">May 2024 - Aug 2024</p>
+                            <p class="text-gray-400">SDE Intern</p>
+                        </div>
+                        <div class="md:col-span-3">
+                            <h3 class="text-2xl font-bold text-white">Amazon</h3>
+                            <p class="mt-2 text-gray-400">Describe your role and key responsibilities here. Focus on the impact you made and the technologies you used.</p>
+                            <ul class="mt-4 list-disc list-inside space-y-2 text-gray-400">
+                                <li>Achievement 1: Quantify your accomplishment (e.g., Improved API latency by 15%).</li>
+                                <li>Achievement 2: Describe a key feature you built or a problem you solved.</li>
+                                <li>Achievement 3: Mention collaboration or a specific technical challenge you overcame.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="bg-gray-900/50 py-20 sm:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Projects</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project 1 -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col">
+                        <h3 class="text-2xl font-bold text-white">Sentiment Analyzer</h3>
+                        <p class="mt-2 text-gray-400 flex-grow">A full-stack app with a custom-trained ML model served via a Flask API.</p>
+                        <div class="mt-4">
+                            <h4 class="font-semibold text-white mb-2">Tech Stack:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">Python</span>
+                                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">Flask</span>
+                                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">Scikit-learn</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-center gap-x-4">
+                            <a href="https://github.com/RukminiVelidi/sentiment-analyzer" target="_blank" class="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center gap-x-1">
+                                <i data-lucide="github" class="w-4 h-4"></i> Repository
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Project 2 -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col">
+                        <h3 class="text-2xl font-bold text-white">SMART SWIPE</h3>
+                        <p class="mt-2 text-gray-400 flex-grow">An ML Model to detect credit card fraud using SMOTE and ADASYN for imbalanced data.</p>
+                        <div class="mt-4">
+                            <h4 class="font-semibold text-white mb-2">Tech Stack:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">Python</span>
+                                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">Pandas</span>
+                                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">SMOTE</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-center gap-x-4">
+                            <a href="https://github.com/RukminiVelidi/Smart-Swipe" target="_blank" class="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center gap-x-1">
+                                <i data-lucide="github" class="w-4 h-4"></i> Repository
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Project 3 -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col">
+                        <h3 class="text-2xl font-bold text-white">NASA Orrery Model</h3>
+                        <p class="mt-2 text-gray-400 flex-grow">Interactive 3D planetary simulation visualizing celestial bodies using NASA APIs.</p>
+                        <div class="mt-4">
+                            <h4 class="font-semibold text-white mb-2">Tech Stack:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">Three.js</span>
+                                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">JavaScript</span>
+                                <span class="bg-gray-700 text-gray-300 px-2 py-1 rounded-full text-xs">NASA APIs</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-center gap-x-4">
+                            <a href="https://github.com/RukminiVelidi/NASA-Orrery-Model-of-Planets" target="_blank" class="text-blue-400 hover:text-blue-300 font-medium inline-flex items-center gap-x-1">
+                                <i data-lucide="github" class="w-4 h-4"></i> Repository
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ML Lab Section -->
+        <section id="lab" class="py-20 sm:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Interactive ML Lab 🧪</h2>
+                    <p class="mt-4 text-lg text-gray-400 max-w-3xl mx-auto">
+                        This demo uses the real Scikit-learn model from my project above, served via a Python/Flask API. I engineered the system to interpret predictions with less than 85% confidence as 'Neutral' for a more robust user experience.
+                    </p>
+                </div>
+                <div class="mt-16 max-w-2xl mx-auto">
+                    <div class="glass-card p-8 rounded-2xl">
+                        <h3 class="text-xl font-semibold text-white mb-4">Live Sentiment Analysis</h3>
+                        <textarea id="text-input" rows="6" class="w-full p-4 bg-gray-900/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300" placeholder="e.g., The acting was fantastic but the plot was boring."></textarea>
+                        <button id="analyze-btn" class="mt-6 w-full inline-flex items-center justify-center gap-x-2 px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-900 transition-transform hover:scale-105">
+                            <span id="btn-text">Analyze</span>
+                            <div id="btn-loader" class="spinner hidden"></div>
+                        </button>
+                        <div id="result-container" class="mt-8"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements Section -->
+        <section id="achievements" class="bg-gray-900/50 py-20 sm:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Achievements</h2>
+                </div>
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <!-- Achievement 1 -->
+                    <div class="glass-card rounded-xl p-6 flex items-center gap-x-4">
+                        <i data-lucide="award" class="w-8 h-8 text-yellow-400 flex-shrink-0"></i>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Dean's List</h3>
+                            <p class="text-gray-400">Awarded for academic excellence during the Fall 2023 semester.</p>
+                        </div>
+                    </div>
+                    <!-- Achievement 2 -->
+                    <div class="glass-card rounded-xl p-6 flex items-center gap-x-4">
+                        <i data-lucide="trophy" class="w-8 h-8 text-blue-400 flex-shrink-0"></i>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Winner, University Hackathon 2024</h3>
+                            <p class="text-gray-400">Developed a prize-winning application in a 24-hour coding competition.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Responsibilities & Clubs Section -->
+        <section id="responsibilities" class="py-20 sm:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Responsibilities & Clubs</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Left Column: Leadership -->
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold text-white text-center md:text-left">Leadership Roles</h3>
+                        <div class="glass-card rounded-xl p-6">
+                            <h4 class="font-bold text-white text-lg">President, AI & Machine Learning Club</h4>
+                            <p class="text-gray-400 text-sm mb-2">Sep 2023 - Present</p>
+                            <ul class="list-disc list-inside text-gray-400 space-y-1">
+                                <li>Organized and led weekly workshops on Python and TensorFlow.</li>
+                                <li>Mentored 20+ junior members on their personal ML projects.</li>
+                            </ul>
+                        </div>
+                        <div class="glass-card rounded-xl p-6">
+                            <h4 class="font-bold text-white text-lg">Teaching Assistant, Intro to Computer Science</h4>
+                            <p class="text-gray-400 text-sm mb-2">Jan 2024 - May 2024</p>
+                            <ul class="list-disc list-inside text-gray-400 space-y-1">
+                                <li>Hosted weekly office hours for a class of 100+ students.</li>
+                                <li>Graded assignments and provided constructive feedback.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Right Column: Clubs -->
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold text-white text-center md:text-left">Clubs & Organizations</h3>
+                        <div class="glass-card rounded-xl p-6 flex items-center gap-x-4">
+                            <i data-lucide="code-2" class="w-8 h-8 text-green-400 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="text-xl font-bold text-white">Competitive Programming Club</h4>
+                                <p class="text-gray-400">Active member participating in weekly contests.</p>
+                            </div>
+                        </div>
+                        <div class="glass-card rounded-xl p-6 flex items-center gap-x-4">
+                            <i data-lucide="shield" class="w-8 h-8 text-indigo-400 flex-shrink-0"></i>
+                            <div>
+                                <h4 class="text-xl font-bold text-white">Cybersecurity Club</h4>
+                                <p class="text-gray-400">Member, participated in Capture The Flag (CTF) events.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Coding Profiles Section -->
+        <section id="coding-profiles" class="bg-gray-900/50 py-20 sm:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Coding Profiles</h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                    <!-- LeetCode -->
+                    <a href="YOUR_LEETCODE_URL" target="_blank" class="glass-card rounded-2xl p-6 text-center hover:border-yellow-500 hover:scale-105 transition-all duration-300">
+                        <h3 class="text-2xl font-bold text-white">LeetCode</h3>
+                        <p class="mt-2 text-gray-400">Problems Solved</p>
+                        <p class="mt-2 text-5xl font-extrabold text-yellow-400">500+</p>
+                    </a>
+                    <!-- HackerRank -->
+                    <a href="YOUR_HACKERRANK_URL" target="_blank" class="glass-card rounded-2xl p-6 text-center hover:border-green-500 hover:scale-105 transition-all duration-300">
+                        <h3 class="text-2xl font-bold text-white">HackerRank</h3>
+                        <p class="mt-2 text-gray-400">Problems Solved</p>
+                        <p class="mt-2 text-5xl font-extrabold text-green-400">300+</p>
+                    </a>
+                    <!-- GeeksforGeeks -->
+                    <a href="YOUR_GFG_URL" target="_blank" class="glass-card rounded-2xl p-6 text-center hover:border-green-400 hover:scale-105 transition-all duration-300">
+                        <h3 class="text-2xl font-bold text-white">GeeksforGeeks</h3>
+                        <p class="mt-2 text-gray-400">Problems Solved</p>
+                        <p class="mt-2 text-5xl font-extrabold text-green-300">400+</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 sm:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-extrabold text-white sm:text-4xl">Skills & Technologies</h2>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-semibold text-white">Languages</h3>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">Python</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">JavaScript</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">Java</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">C++</span>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-semibold text-white">ML/Data Science</h3>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">Scikit-learn</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">Pandas</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">NumPy</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">TensorFlow</span>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-semibold text-white">Backend & Web</h3>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">Flask</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">Node.js</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">REST APIs</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">HTML/CSS</span>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-semibold text-white">Tools & Platforms</h3>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">Git & GitHub</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">Docker</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">AWS</span>
+                            <span class="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-blue-600 hover:scale-110 transition-all duration-200 cursor-pointer">Postman</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-gray-900 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p>&copy; 2025 Your Name. Built with passion and code.</p>
+            <p class="mt-2">
+                <a href="mailto:youremail@example.com" class="hover:text-blue-400 transition-colors">youremail@example.com</a>
+            </p>
+        </div>
+    </footer>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+
+        // --- FINALIZED INTERACTIVE SIDEBAR LOGIC ---
+        const body = document.body;
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+        const overlay = document.getElementById('overlay');
+        const navLinks = document.querySelectorAll('#sidebar nav a');
+
+        function toggleSidebar() {
+            body.classList.toggle('sidebar-open');
+            if(window.innerWidth < 768) { // Only toggle overlay on mobile
+                overlay.classList.toggle('hidden');
+            }
+        }
+
+        hamburgerBtn.addEventListener('click', toggleSidebar);
+        sidebarCloseBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth < 768 && body.classList.contains('sidebar-open')) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        // This is no longer needed as the sidebar now starts closed by default
+        // Initialize sidebar state on page load for mobile
+        /*
+        if (window.innerWidth < 768) {
+            body.classList.remove('sidebar-open');
+        }
+        */
+    });
+
+
+    // --- REAL SENTIMENT ANALYSIS LOGIC ---
+    const textInput = document.getElementById('text-input');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const resultContainer = document.getElementById('result-container');
+    const btnText = document.getElementById('btn-text');
+    const btnLoader = document.getElementById('btn-loader');
+
+    const icons = {
+        Positive: `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>`,
+        Negative: `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-400"><circle cx="12" cy="12" r="10"></circle><path d="M16 16s-1.5-2-4-2-4 2-4 2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>`,
+        Neutral: `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="15" x2="16" y2="15"></line><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>`
+    };
+
+    async function getSentimentFromAPI(text) {
+        // IMPORTANT: Replace this with your live Render backend URL during deployment
+        const endpoint = 'http://localhost:5001/predict';
+        const response = await fetch(endpoint, {
+            method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text }),
+        });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return await response.json();
+    }
+
+    function displayResult(sentiment, confidence) {
+        const colors = {
+            Positive: { border: 'border-green-500', bg: 'bg-green-900/50', text: 'text-green-300' },
+            Negative: { border: 'border-red-500', bg: 'bg-red-900/50', text: 'text-red-300' },
+            Neutral: { border: 'border-gray-500', bg: 'bg-gray-800/50', text: 'text-gray-300' }
+        };
+        const color = colors[sentiment] || colors['Neutral'];
+
+        resultContainer.innerHTML = `
+            <div class="border ${color.border} ${color.bg} p-6 rounded-xl fade-in">
+                <div class="flex items-center gap-x-4">
+                    <div>${icons[sentiment]}</div>
+                    <div class="flex-grow flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium text-gray-400">Result</p>
+                            <p class="text-2xl font-bold ${color.text}">${sentiment}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-400">Confidence</p>
+                            <p class="text-2xl font-bold ${color.text}">${confidence}%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    analyzeBtn.addEventListener('click', async () => {
+        const text = textInput.value.trim();
+        if (!text) {
+            resultContainer.innerHTML = `<p class="text-yellow-400 text-center">Please enter some text to analyze.</p>`;
+            return;
+        }
+
+        btnText.classList.add('hidden');
+        btnLoader.classList.remove('hidden');
+        analyzeBtn.disabled = true;
+        resultContainer.innerHTML = `<p class="text-center text-gray-400">Communicating with the model...</p>`;
+
+        try {
+            let result = await getSentimentFromAPI(text);
+            const confidenceValue = parseFloat(result.confidence);
+            if (confidenceValue < 85) result.sentiment = 'Neutral';
+            displayResult(result.sentiment, result.confidence);
+        } catch (error) {
+            console.error("Error during sentiment analysis:", error);
+            resultContainer.innerHTML = `
+                <div class="border border-red-500 bg-red-900/50 p-4 rounded-lg fade-in">
+                    <p class="text-red-300 font-bold text-center">Connection Error</p>
+                    <p class="text-red-400 text-center mt-2">Failed to connect to the model. Please ensure the Python backend server is running. <br>(Run <code>python app.py</code> in the 'backend' folder).</p>
+                </div>`;
+        } finally {
+            btnText.classList.remove('hidden');
+            btnLoader.classList.add('hidden');
+            analyzeBtn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>
+
+
