@@ -575,8 +575,7 @@
     };
 
     async function getSentimentFromAPI(text) {
-        // IMPORTANT: Replace this with your live Render backend URL during deployment
-        const endpoint = 'http://localhost:5001/predict';
+        const endpoint = 'https://sentiment-analyzer-api-qwert.onrender.com/predict';
         const response = await fetch(endpoint, {
             method: 'POST', mode: 'cors', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: text }),
